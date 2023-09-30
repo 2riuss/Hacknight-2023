@@ -10,7 +10,7 @@ class GAME:
         
         self.taulell = matriu_random(N, M)
 
-        self.pos_0 = [2,0]
+        self.pos_0 = trobar_zero(self.taulell)
 
     def guanyat(self):
         for i in range(N):

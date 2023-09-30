@@ -1,4 +1,5 @@
 import numpy as np
+from funcions_matrius.py import matriu_guanyadora, matriu_random
 
 N = 3
 M = 3

@@ -1,18 +1,14 @@
 import numpy as np
-from funcions_matrius.py import matriu_guanyadora, matriu_random
+from funcions_matrius import matriu_guanyadora, matriu_random
 
 N = 3
 M = 3
 
 class GAME:
     def __init__(self):
-        self.win = np.matrix([[0,1,2],
-                              [3,4,5],
-                              [6,7,8]])
+        self.win = matriu_guanyadora(N,M)
         
-        self.taulell = np.matrix([[2,6,4],
-                                 [1,5,7],
-                                 [0,8,3]])
+        self.taulell = matriu_random(N, M)
 
         self.pos_0 = [2,0]
 

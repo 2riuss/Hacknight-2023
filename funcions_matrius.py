@@ -19,13 +19,12 @@ def is_even(p):
 def matriu_random(n, m):
     llista = np.arange(0, (n*m), 1)
     vec = np.random.permutation(llista)
-    if (is_even(vec)):
-        matriu_random(n, m)
-    else:
-        A = np.zeros((n,m))
-        for i in range (n):
-            A[i] = vec[i*m:(i+1)*m]
-        return A
+    while (is_even(vec)):
+        vec = np.random.permutation(llista)
+    A = np.zeros((n,m))
+    for i in range (n):
+        A[i] = vec[i*m:(i+1)*m]
+    return A
 
 def matriu_guanyadora(n,m):
     llista = np.arange(0, (n*m), 1)
@@ -34,3 +33,12 @@ def matriu_guanyadora(n,m):
         A[i] = llista[i*m:(i+1)*m]
     
     return A
+
+def trobar_zero(A):
+    res = np.where(A==0)
+    resultat = np.array([res[0][0], res[1][0]])
+    return resultat
+
+A = matriu_random(3, 3)
+print(A)
+print(trobar_zero(A))

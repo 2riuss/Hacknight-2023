@@ -1,21 +1,20 @@
 import numpy as np
-from funcions_matrius import *
+from funcions_matrius import matriu_random, matriu_guanyadora, trobar_zero
 import math
 import random
 
-N=3
-
+N = 3
+M = 3
 
 def __codificacio__(taulell):
-    taulell = taulell.reshape(9,1)
-    print(taulell.shape)
+    taulell = taulell.reshape(N*M)
     index = 0
-    aux = [0,1,2,3,4,5,6,7,8]
-    for i in range(9):
-        index += math.factorial(8-i) * (aux[int(taulell[i])])
-        aux[int(taulell[i]):] -= np.ones(9-int(taulell[i]))
+    aux = np.arange(N*M)
+    for i in range(N*M):
+        index += math.factorial(N*M-i-1) * aux[taulell[i]]
+        aux[taulell[i]:] -= np.ones(N*M-taulell[i], dtype=int)
 
-    return int(index)
+    return index
 
 class ESTRATEGIA_EXPL():
     def __init__(self, inici, final, caiguda):
@@ -47,7 +46,7 @@ class AGENT:
 
 class GAME:
     def __init__(self):
-        self.win = matriu_guanyadora(N,M)
+        self.win = matriu_guanyadora(N, M)
         
         self.taulell = matriu_random(N, M)
 
@@ -78,7 +77,14 @@ class GAME:
         self.pos_0[1] += move[1]
         return self.taulell, -1
 
-    def actualitzar_q_table(self, move, q_table, alpha, gamma, agent):
+    def actualitzar_q_table(self, move, q_table, alpha, gamma, agent):  
+        """ERROR: al fer la crida a la funcio el paramatre "move" que li hem passat 
+        es un enter entre 1,..n_acctions, el format es correcta per accedir a la q_table.
+        Pero tambe l'hem utilitzat per a cridar a les funcions is_valid_move i prendre_nou_estat,
+        que on el parametre ha de ser una tupla de la forma (+-1,0) o (0,+-1)
+        
+        Hauriem de fer funcions per passar d'un format a l'altre, ho podriem necessitar en altres
+        funcions apart d'aquesta"""
         if not self.is_valid_move(move):
             nou_estat = self.taulell
             recompensa = -10
@@ -103,7 +109,7 @@ def main1():
         elif (user == "d"): move = [0,1]
 
         if (game.is_valid_move(move)):
-            game.move(move)
+            game.prendre_nou_estat(move)
         else:
             print("Invalid!")
 
@@ -116,7 +122,7 @@ def main2():
     n_estats = math.factorial(9)
     n_accions = 4
 
-    q_table = np.zeros((n_estats, n_accions))
+    q_table = np.zeros((n_estats, n_accions))   # son floats, no se si ho han de ser si voleu int heu de posar dtype=int
     
     n_episodes = 10000
     max_iter = 76

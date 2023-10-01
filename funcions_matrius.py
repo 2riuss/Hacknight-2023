@@ -19,16 +19,16 @@ def is_even(p):
 def matriu_random(n, m):
     llista = np.arange(0, (n*m), 1)
     vec = np.random.permutation(llista)
-    while (is_even(vec)):
+    while (is_even(vec)):                       # todo arreglar-ho. La condicio de factivilitat no es aquesta ens hem equivocat
         vec = np.random.permutation(llista)
-    A = np.zeros((n,m))
+    A = np.zeros((n,m), dtype=int)
     for i in range (n):
         A[i] = vec[i*m:(i+1)*m]
     return A
 
 def matriu_guanyadora(n,m):
     llista = np.arange(0, (n*m), 1)
-    A = np.zeros((n,m))
+    A = np.zeros((n,m), dtype=int)
     for i in range(n):
         A[i] = llista[i*m:(i+1)*m]
     
@@ -38,7 +38,3 @@ def trobar_zero(A):
     res = np.where(A==0)
     resultat = np.array([res[0][0], res[1][0]])
     return resultat
-
-A = matriu_random(3, 3)
-print(A)
-print(trobar_zero(A))

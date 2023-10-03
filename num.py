@@ -2,9 +2,10 @@ import numpy as np
 from funcions_matrius import matriu_random, matriu_guanyadora, trobar_zero
 import math
 import random
+import matplotlib.pyplot as plt
 
-N = 3
-M = 3
+N = 1
+M = 2
 
 def __codificacio__(taulell):
     taulell = taulell.reshape(N*M)
@@ -48,7 +49,9 @@ class GAME:
     def __init__(self):
         self.win = matriu_guanyadora(N, M)
         
-        self.taulell = matriu_random(N, M)
+        self.taulell_ini = matriu_random(N, M)
+        
+        self.taulell = self.taulell_ini.copy()
 
         self.pos_0 = trobar_zero(self.taulell)
         
@@ -66,6 +69,10 @@ class GAME:
                 if self.win[i,j] != self.taulell[i,j]: return False
         
         return True
+    
+    def reset(self):
+        self.taulell = self.taulell_ini.copy()
+        return
 
     """
     (-1,0)  -> 0 cap a dalt
@@ -122,8 +129,7 @@ def main1():
 def main2():
 
     n_episodes = 10000
-    max_iter = 76
-    iter = 0
+    max_iter = 20
 
     alpha = 0.5
     gamma = 1
@@ -132,11 +138,19 @@ def main2():
     estrategia = ESTRATEGIA_EXPL(1, 0.05, epsilon)
     game = GAME()
     agent = AGENT(estrategia, game.n_accions)
+    pasos = []
 
     for i in range(n_episodes):
+        iter = 0
+        game.reset()
         while(not game.guanyat() and iter < max_iter):
             accio = agent.seleccionar_accio(game.taulell, game.q_table)
             game.actualitzar_q_table(accio, alpha, gamma, agent)
             iter += 1
-            
+        print(f"Episode: {i}, Moviments: {iter}")
+        pasos.append(iter)
+    
+    plt.plot(pasos)
+    print(f"Min pasos: {min(pasos)}")
+    
 main2()
